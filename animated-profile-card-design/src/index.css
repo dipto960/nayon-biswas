@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #04070f;
+  --color-accent: #57b8ff;
+  --color-violet-glow: #8b7cff;
+}
+
+html,
+body {
+  background: #04070f;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(87, 184, 255, 0.35);
+  color: #fff;
+}
+
+/* ---------- Aurora blobs ---------- */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+@keyframes drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(6vw, 4vh, 0) scale(1.15); }
+  100% { transform: translate3d(-3vw, 8vh, 0) scale(0.95); }
+}
+@keyframes drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-7vw, -5vh, 0) scale(1.1); }
+  100% { transform: translate3d(4vw, -9vh, 0) scale(0.9); }
+}
+@keyframes drift-c {
+  0%   { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  100% { transform: translate3d(3vw, -6vh, 0) scale(1.2) rotate(40deg); }
+}
+
+.animate-drift-a { animation: drift-a 24s ease-in-out infinite alternate; }
+.animate-drift-b { animation: drift-b 30s ease-in-out infinite alternate; }
+.animate-drift-c { animation: drift-c 26s ease-in-out infinite alternate; }
+
+/* ---------- Stars ---------- */
+.star {
+  position: absolute;
+  border-radius: 9999px;
+  background: #cfe4ff;
+  opacity: 0;
+  animation: twinkle var(--dur, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  will-change: opacity, transform;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.08; transform: scale(0.6); }
+  50%      { opacity: 0.9;  transform: scale(1); }
+}
+
+/* ---------- Perspective grid ---------- */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(148, 184, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 184, 255, 0.055) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(70% 55% at 50% 32%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(70% 55% at 50% 32%, black 0%, transparent 100%);
+}
+
+/* ---------- Verified badge shine ---------- */
+.badge-shine {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+}
+.badge-shine::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.8) 50%, transparent 58%);
+  transform: translateX(-130%);
+  animation: badge-sweep 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 2.2s;
+  pointer-events: none;
+}
+@keyframes badge-sweep {
+  0%   { transform: translateX(-130%); }
+  45%  { transform: translateX(130%); }
+  100% { transform: translateX(130%); }
+}
+
+/* ---------- Link sheen sweep ---------- */
+.link-sheen {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 34%;
+  transform: translateX(-160%) skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.13), transparent);
+  pointer-events: none;
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.group:hover .link-sheen {
+  transform: translateX(420%) skewX(-18deg);
+}
+
+/* ---------- Online pulse ---------- */
+@keyframes soft-ping {
+  0%   { transform: scale(1);    opacity: 0.9; }
+  80%  { transform: scale(2.6);  opacity: 0; }
+  100% { transform: scale(2.6);  opacity: 0; }
+}
+.soft-ping {
+  animation: soft-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ---------- Avatar halo spin ---------- */
+@keyframes halo-spin {
+  to { transform: rotate(360deg); }
+}
+.halo-spin {
+  animation: halo-spin 7s linear infinite;
+}
+.halo-spin-rev {
+  animation: halo-spin 12s linear infinite reverse;
+}
+
+/* ---------- Marquee-ish gradient border glow ---------- */
+@keyframes breathe {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+.breathe { animation: breathe 4s ease-in-out infinite; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .blob, .star, .halo-spin, .halo-spin-rev, .badge-shine::after, .soft-ping, .breathe {
+    animation: none !important;
+  }
+  .link-sheen { display: none; }
+}
